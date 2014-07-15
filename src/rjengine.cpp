@@ -1,5 +1,5 @@
-#include <SDL.h>
 #include "rjengine.h"
+#include "sprite.h"
 
 RJEngine::RJEngine(char* title, int32_t sWidth, int32_t sHeight)
 {
@@ -23,6 +23,11 @@ bool RJEngine::Initialize()
 	}
 	else
 	{
+		if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+		{
+			printf("Linear texture filtering disabled");
+		}
+
 		mainWindow = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 		if ( mainWindow == NULL )
 		{
@@ -31,16 +36,28 @@ bool RJEngine::Initialize()
 		}
 		else
 		{
-			screenSurface = SDL_GetWindowSurface( mainWindow );
+			mainRenderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_ACCELERATED);
+			if (mainRenderer == NULL)
+			{
+				printf("Renderer not created! SDL_Error: %s\n", SDL_GetError() );
+				success = false;
+			}
+			else
+			{
+				SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
+				int imgFlags = IMG_INIT_PNG;
+				if (!(IMG_Init(imgFlags) & imgFlags ))
+				{
+					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+					success = false;
+				}
+			}
 		}
 	}
+	
+	testSprite = Sprite::Load("\\images\\test.bmp", mainRenderer);
 
-	imageSurface = SDL_LoadBMP("swamp.bmp");
-	if(imageSurface == NULL)
-	{
-		printf("Unable to load image %s. SDL error: %s\n", "\\images\\swamp.bmp", SDL_GetError() );
-		success = false;
-	}
+	bgTexture = Sprite::Load("\\images\\swamp.png", mainRenderer);
 
 	return success;
 }
@@ -49,6 +66,7 @@ void RJEngine::MainLoop()
 {
 	while (mainWindow != NULL)
 	{
+		SDL_RenderClear(mainRenderer);
 		HandleInput();
 		Update();
 		Render();
@@ -60,36 +78,46 @@ void RJEngine::HandleInput()
 {
 	while (SDL_PollEvent(&event) != 0)
 	{
-		if (event.type == SDL_QUIT)
+		switch (event.type)
 		{
-			this->Close();
-		} 
-		else if (event.type == SDL_MOUSEBUTTONDOWN)
-		{
-			//switch(event.button.button)
-			//{
-			//	case SDL_BUTTON_LEFT:
+			case SDL_QUIT:
+				this->Close();
+				break;
 
-			//}
-		}
+			case SDL_KEYDOWN:
+				switch(event.key.keysym.sym)
+				{
+					case SDLK_LEFT:
+						printf("LEFT PRESSED!\n");
+						break;
+					case SDLK_RIGHT:
+						printf("RIGHT PRESSED!\n");
+						break;
+					case SDLK_DOWN:
+						printf("DOWN PRESSED!\n");
+						break;
+					case SDLK_UP:
+						printf("UP PRESSED!\n");
+						break;
+				}
+				break;
+		} 
 	}
 }
 
 void RJEngine::Update()
 {
-	SDL_BlitSurface(imageSurface, NULL, screenSurface, NULL);
-	SDL_UpdateWindowSurface(mainWindow);
+	Sprite::Draw(mainRenderer, testSprite, 0, 0);
+	Sprite::Draw(mainRenderer, testSprite, 150, 150, 0, 0, 32, 32);
 }
 
 void RJEngine::Render()
 {
-
+	SDL_RenderPresent(mainRenderer);
 }
 
 void RJEngine::Close()
 {
-	SDL_FreeSurface(screenSurface);
-	screenSurface = NULL;
 	SDL_DestroyWindow( mainWindow );
 	mainWindow = NULL;
 	SDL_Quit();	

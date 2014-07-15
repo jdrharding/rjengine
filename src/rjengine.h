@@ -2,15 +2,16 @@
 #define _RJENGINE_H
 
 #include <SDL.h>
-#include <string>
+#include <SDL_image.h>
 
 class RJEngine
 {
 	private:
 		//Our main window in which our game will be rendered.
 		SDL_Window* mainWindow;
-		SDL_Surface* screenSurface;
-		SDL_Surface* imageSurface;
+		SDL_Renderer* mainRenderer;
+		SDL_Texture* bgTexture;
+		SDL_Texture* testSprite;
 		SDL_Event event;
 		char* windowTitle;
 		int32_t windowHeight;
