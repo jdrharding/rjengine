@@ -3,15 +3,22 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include <stdio.h>
 
 class Sprite
 {
+	private:
+		char* imageFile;
+		char* dataFile;
+
+		SDL_Renderer* renderer = NULL;
+		
 	public:
 		Sprite();
 		~Sprite();
 
 		static SDL_Texture* Load(char* file, SDL_Renderer* renderer);
+
+		static bool CreateAnimations(char* file);
 
 		static bool Draw(SDL_Renderer* renderer, SDL_Texture* texture, int xPos, int yPos);
 
