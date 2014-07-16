@@ -1,21 +1,24 @@
 #include "texturemgr.h"
+#include "rjengine.h"
 
-TextureManager::TextureManager()
+bool TextureManager::Initialize()
 {
+	Close();
 
-}
-
-TextureManager::~TextureManager()
-{
-
+	SDL_Renderer* renderer = RJEngine::
 }
 
 void TextureManager::Add(SDL_Texture* text)
 {
-	textureList.push_back(text);
+
 }
 
-SDL_Texture* TextureManager::Get(int index)
+Texture* TextureManager::Get(char* id)
 {
-	return textureList[index];
+	if (textureList.find(id) == textureList.end())
+	{
+		return 0;
+	}
+
+	return textureList[id];
 }

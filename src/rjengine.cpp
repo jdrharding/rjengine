@@ -1,6 +1,8 @@
 #include "rjengine.h"
 #include "sprite.h"
 
+RJEngine RJEngine::instance;
+
 RJEngine::RJEngine(char* title, int32_t sWidth, int32_t sHeight)
 {
 	windowTitle = title;
@@ -8,14 +10,10 @@ RJEngine::RJEngine(char* title, int32_t sWidth, int32_t sHeight)
 	windowHeight = sHeight;
 }
 
-RJEngine::~RJEngine()
-{
-
-}
-
 bool RJEngine::Initialize()
 {
 	bool success = true;
+
 	if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
 	{
 		printf("SDL could not be initialized! SDL_Error: %s\n", SDL_GetError() );
@@ -54,10 +52,9 @@ bool RJEngine::Initialize()
 			}
 		}
 	}
-	
-	testSprite = Sprite::Load("\\images\\test.bmp", mainRenderer);
 
-	bgTexture = Sprite::Load("\\images\\swamp.png", mainRenderer);
+	testTexture = new Texture();
+	testTexture->Load("\\images\\swamp.png", mainRenderer);
 
 	return success;
 }
@@ -107,19 +104,31 @@ void RJEngine::HandleInput()
 
 void RJEngine::Update()
 {
-	Sprite::Draw(mainRenderer, testSprite, 0, 0);
-	Sprite::Draw(mainRenderer, testSprite, 150, 150, 0, 0, 32, 32);
+
 }
 
 void RJEngine::Render()
 {
+	SDL_RenderClear(mainRenderer);
+	testTexture->Draw(0, 0);
 	SDL_RenderPresent(mainRenderer);
 }
 
 void RJEngine::Close()
 {
-	SDL_DestroyWindow( mainWindow );
-	mainWindow = NULL;
+	if(mainWindow)
+	{
+		SDL_DestroyWindow( mainWindow );
+		mainWindow = NULL;
+	}
+
+	if(mainRenderer)
+	{
+		SDL_DestroyRenderer(mainRenderer);
+		mainRenderer = NULL;
+	}
+
+	IMG_Quit();
 	SDL_Quit();	
 }
 
@@ -131,4 +140,14 @@ void RJEngine::Begin()
 	}
 
 	MainLoop();
+}
+
+SDL_Renderer* RJEngine::GetEngineRenderer()
+{
+	return mainRenderer;
+}
+
+RJEngine* RJEngine::GetEngineInstance()
+{
+	return  &instance;
 }

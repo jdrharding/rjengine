@@ -1,4 +1,4 @@
-OBJS = rjmain.cpp rjengine.h rjengine.cpp texturemgr.h texturemgr.cpp sprite.h sprite.cpp
+OBJS = rjmain.cpp rjengine.h rjengine.cpp texture.h texture.cpp sprite.h sprite.cpp
 
 CC = g++
 

@@ -4,18 +4,25 @@
 #include <vector>
 #include <map>
 #include <SDL.h>
+#include "texture.h"
 
 class TextureManager
 {
 	private:
 
-		std::map<char*, SDL_Texture *> textureList;
-public:
-	TextureManager();
-	~TextureManager();
+		static std::map<char*, SDL_Texture *> textureList;
 
-	void Add(SDL_Texture text);
-	SDL_Texture Get(int index);
+		static bool Add(SDL_Renderer* renderer, char* id, char* file);
+
+	public:
+
+		static bool Initialize();
+
+		static void Close();
+
+		static Texture Get(char* id);
+
+		static TextureManager* Instance();
 };
 
 #endif
