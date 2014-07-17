@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "texture.h"
+#include "sprite.h"
 
 class RJEngine
 {
@@ -18,7 +19,8 @@ class RJEngine
 		//Surface on our Window
 		SDL_Surface* mainSurface;
 
-		Texture* testTexture;
+		TextureManager* testTextureMgr;
+		Sprite* testSprite;
 
 		SDL_Event event;
 
@@ -27,8 +29,12 @@ class RJEngine
 		int windowHeight;
 		int windowWidth;
 
+	private:
+
+		RJEngine();
+
 		//Initialize the engine and create the window.
-		bool Initialize();
+		bool Initialize(char* title, int sWidth, int sHeight);
 		//The main loop that our game will exist within.
 		void MainLoop();
 		//Handle any user input
@@ -43,8 +49,6 @@ class RJEngine
 	public:
 
 		SDL_Renderer* GetEngineRenderer();
-
-		RJEngine(char* title, int32_t sWidth, int32_t sHeight);
 
 		void Begin();
 

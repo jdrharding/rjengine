@@ -1,28 +1,29 @@
 #ifndef _TEXTUREMGR_H
 #define _TEXTUREMGR_H
 
-#include <vector>
 #include <map>
 #include <SDL.h>
+#include <stdio.h>
 #include "texture.h"
 
 class TextureManager
 {
 	private:
 
-		static std::map<char*, SDL_Texture *> textureList;
+		std::map<char*, Texture*> textureList;
 
-		static bool Add(SDL_Renderer* renderer, char* id, char* file);
 
 	public:
 
-		static bool Initialize();
+		bool Add(SDL_Renderer* renderer, char* id, char* filename);
 
-		static void Close();
+		bool Remove(char* id);
 
-		static Texture Get(char* id);
+		TextureManager();
 
-		static TextureManager* Instance();
+		void Close();
+
+		Texture* Get(char* id);
 };
 
 #endif

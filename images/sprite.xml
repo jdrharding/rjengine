@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Sprite Name="Test" AnimationCount="4">
+	<Animation Name="WalkUp" Frames="2">
+		<Texture ID="1" XPos="0" YPos="0" Height="32" Width="32" />		
+		<Texture ID="2" XPos="32" YPos="0" Height="32" Width="32" />
+	</Animation>
+	<Animation Name="WalkRight" Frames="2">	
+		<Texture ID="1" XPos="64" YPos="0" Height="32" Width="32" />		
+		<Texture ID="2" XPos="96" YPos="0" Height="32" Width="32" />
+	</Animation>
+	<Animation Name="WalkDown" Frames="2">
+		<Texture ID="1" XPos="128" YPos="0" Height="32" Width="32" />		
+		<Texture ID="2" XPos="160" YPos="0" Height="32" Width="32" />
+	</Animation>
+	<Animation Name="WalkLeft" Frames="2">
+		<Texture ID="1" XPos="192" YPos="0" Height="32" Width="32" />		
+		<Texture ID="2" XPos="224" YPos="0" Height="32" Width="32" />
+	</Animation>	
+</Sprite>

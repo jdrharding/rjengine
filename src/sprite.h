@@ -4,26 +4,34 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
+#include <map>
+#include <utility>
+#include "texturemgr.h"
+#include "rapidxml.hpp"
 
 class Sprite
 {
 	private:
-		char* imageFile;
-		char* dataFile;
+		char* id;
+		int xPos;
+		int yPos;
+		int currFrame;
+		int currAnim;
 
-		SDL_Renderer* renderer = NULL;
+		TextureManager* textureMgr;
+
+		static std::map<char*, int> animationList;
+		static std::map<int, std::pair<int, SDL_Rect>> animationFrames;   
 		
 	public:
-		Sprite();
-		~Sprite();
+		Sprite(char* id, int x, int y);
 
-		static SDL_Texture* Load(char* file, SDL_Renderer* renderer);
+		static bool Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, TextureManager* textureMgr);
 
-		static bool CreateAnimations(char* file);
+		void Draw();
+		int GetX();
+		int GetY();
 
-		static bool Draw(SDL_Renderer* renderer, SDL_Texture* texture, int xPos, int yPos);
-
-		static bool Draw(SDL_Renderer* renderer, SDL_Texture* texture, int xPos, int yPos, int xBegin, int yBegin, int width, int height);
 };
 
 #endif

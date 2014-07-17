@@ -1,18 +1,20 @@
 #include "rjengine.h"
 #include "sprite.h"
+#include "texturemgr.h"
 
 RJEngine RJEngine::instance;
 
-RJEngine::RJEngine(char* title, int32_t sWidth, int32_t sHeight)
+RJEngine::RJEngine()
 {
+}
+
+bool RJEngine::Initialize(char* title, int sWidth, int sHeight)
+{
+	bool success = true;
+
 	windowTitle = title;
 	windowWidth = sWidth;
 	windowHeight = sHeight;
-}
-
-bool RJEngine::Initialize()
-{
-	bool success = true;
 
 	if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
 	{
@@ -53,8 +55,15 @@ bool RJEngine::Initialize()
 		}
 	}
 
-	testTexture = new Texture();
-	testTexture->Load("\\images\\swamp.png", mainRenderer);
+	testTextureMgr = new TextureManager();
+	testTextureMgr->Add(mainRenderer, "testBG", "..\\images\\swamp.png");
+	testSprite = new Sprite("tSprite", 500, 500);
+	if(!testSprite->Sprite::Initialize("..\\images\\sprite.png", "..\\images\\sprite.xml", mainRenderer, testTextureMgr));
+	{
+		printf("Unable to initialize Sprite!");
+	}
+
+
 
 	return success;
 }
@@ -110,7 +119,8 @@ void RJEngine::Update()
 void RJEngine::Render()
 {
 	SDL_RenderClear(mainRenderer);
-	testTexture->Draw(0, 0);
+	testTextureMgr->Get("testBG")->Draw(0,0);
+	testSprite->Draw("WalkUp");
 	SDL_RenderPresent(mainRenderer);
 }
 
@@ -134,7 +144,7 @@ void RJEngine::Close()
 
 void RJEngine::Begin()
 {
-	if (!Initialize())
+	if (!Initialize("Testing Engine", 1024, 1024))
 	{
 		throw "Unable to initialize engine, shutting down!";
 	}

@@ -1,63 +1,70 @@
 #include "sprite.h"
 
-Sprite::Sprite()
-{
+std::map<char*, std::pair<int, int>> Sprite::animationList;
+std::map<int, std::map<int, SDL_Rect>> Sprite::animationFrames;
 
+Sprite::Sprite(char* id, int x, int y)
+{
+	this->id = id;
+	xPos = x;
+	yPos = y;
+	currFrame = 0;
+	currAnim = 0;
 }
 
-Sprite::~Sprite()
+bool Sprite::Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, TextureManager* textureMgr)
 {
-
-}
-
-SDL_Texture* Sprite::Load(char *file, SDL_Renderer* renderer)
-{
-	SDL_Texture* texture;
-	SDL_Surface* surface;
-
-	if ((surface = IMG_Load(file)) == NULL)
+	if(textureMgr->Add(rend, id, ifile))
 	{
-		printf("Unable to load %s! SDL_Image Error: %s\n", file, IMG_GetError() );
-		return NULL;
+		rapidxml::xml_document<> doc;
+		doc.parse<0>(dfile);
+		rapidxml::xml_node<> *node = doc.first_node("Sprite");
+		int index = 0;
+		
+		for (rapidxml::xml_node<> *child = node->first_node(); child; child = child->next_sibling())
+		{
+			animationList.insert({child->first_attribute("Name")->value(), {index,atoi(child->first_attribute("Frames")->value())}});
+			
+			for (rapidxml::xml_node<> *gchild = child->first_node(); gchild; gchild = gchild->next_sibling())
+			{
+				SDL_Rect rect = {atoi(gchild->first_attribute("XPos")->value()), atoi(gchild->first_attribute("YPos")->value()), atoi(gchild->first_attribute("Height")->value()), atoi(gchild->first_attribute("Width")->value())};
+				animationFrames.insert({index, {atoi(gchild->first_attribute("ID")->value()), rect}}); 
+			}
+
+		}
+
+	}
+	this->textureMgr = textureMgr;
+	return true;
+}
+
+void Sprite::Draw(char* anim)
+{
+	int cframe = currFrame;
+	if (currAnim != animationList[anim]<0>)
+	{
+		currAnim = animationList[anim]<0>;
+		currFrame = 0;
+	}
+	else if (cframe + 1 > animationList[anim]<1>)
+	{
+		currFrame = 0;
 	}
 	else
 	{
-		if ((texture = SDL_CreateTextureFromSurface(renderer, surface)) == NULL)
-		{
-			printf("Unable to create texture from file %s! SDL Error: %s\n", file, SDL_GetError());
-		}
+		currFrame++;
 	}
 
-	SDL_FreeSurface(surface);
-
-	return texture;
+	SDL_Rect rect = animationFrames[currAnim][currFrame];
+	this->textureMgr->Get(id)->Draw(xPos, yPos, rect.x, rect.y, rect.h, rect.w);
 }
 
-bool Sprite::Draw(SDL_Renderer* renderer, SDL_Texture* texture, int xPos, int yPos)
+int Sprite::GetX()
 {
-	SDL_Rect rectTo;
-
-	rectTo.x = xPos;
-	rectTo.y = yPos;
-
-	SDL_RenderCopy(renderer, texture, NULL, &rectTo);
-
-	return true;
+	return xPos;
 }
 
-bool Sprite::Draw(SDL_Renderer* renderer, SDL_Texture* texture, int xPos, int yPos, int xBegin, int yBegin, int width, int height)
+int Sprite::GetY()
 {
-	SDL_Rect rectFrom, rectTo;
-
-	rectTo.x = xPos;
-	rectTo.y = yPos;
-
-	rectFrom.x = xBegin;
-	rectFrom.y = yBegin;
-	rectFrom.w = width;
-	rectFrom.h = height;
-
-	SDL_RenderCopy(renderer, texture, &rectFrom, &rectTo);
-
-	return true;
+	return yPos;
 }

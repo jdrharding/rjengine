@@ -66,6 +66,8 @@ void Texture::Draw(int xPos, int yPos, int xBegin, int yBegin, int width, int he
 
 	rectTo.x = xPos;
 	rectTo.y = yPos;
+	rectTo.w = width;
+	rectTo.h = height;
 
 	rectFrom.x = xBegin;
 	rectFrom.y = yBegin;
