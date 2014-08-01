@@ -2,6 +2,8 @@
 
 std::map<char*, std::pair<int, int>> Sprite::animationList;
 std::map<int, std::map<int, SDL_Rect>> Sprite::animationFrames;
+char* id = "";
+TextureManager* textureMgr = 0;
 
 Sprite::Sprite(char* id, int x, int y)
 {
@@ -12,9 +14,10 @@ Sprite::Sprite(char* id, int x, int y)
 	currAnim = 0;
 }
 
-bool Sprite::Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, TextureManager* textureMgr)
+bool Sprite::Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, TextureManager* texMgr)
 {
-	if(textureMgr->Add(rend, id, ifile))
+	textureMgr = texMgr;
+	if(textureMgr->Add(renderer, id, ifile))
 	{
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(dfile);
@@ -23,30 +26,31 @@ bool Sprite::Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, Textur
 		
 		for (rapidxml::xml_node<> *child = node->first_node(); child; child = child->next_sibling())
 		{
-			animationList.insert({child->first_attribute("Name")->value(), {index,atoi(child->first_attribute("Frames")->value())}});
+			animationList.insert(std::make_pair(child->first_attribute("Name")->value(), std::make_pair(index,atoi(child->first_attribute("Frames")->value()))));
 			
 			for (rapidxml::xml_node<> *gchild = child->first_node(); gchild; gchild = gchild->next_sibling())
 			{
+				std::map<int, SDL_Rect> ginner;
 				SDL_Rect rect = {atoi(gchild->first_attribute("XPos")->value()), atoi(gchild->first_attribute("YPos")->value()), atoi(gchild->first_attribute("Height")->value()), atoi(gchild->first_attribute("Width")->value())};
-				animationFrames.insert({index, {atoi(gchild->first_attribute("ID")->value()), rect}}); 
+				ginner.insert(std::make_pair(atoi(gchild->first_attribute("ID")->value()), rect));
+				animationFrames.insert(std::make_pair(index, ginner)); 
 			}
 
 		}
 
 	}
-	this->textureMgr = textureMgr;
 	return true;
 }
 
 void Sprite::Draw(char* anim)
 {
 	int cframe = currFrame;
-	if (currAnim != animationList[anim]<0>)
+	if (currAnim != animationList[anim].first)
 	{
-		currAnim = animationList[anim]<0>;
+		currAnim = animationList[anim].first;
 		currFrame = 0;
 	}
-	else if (cframe + 1 > animationList[anim]<1>)
+	else if (cframe + 1 > animationList[anim].second)
 	{
 		currFrame = 0;
 	}

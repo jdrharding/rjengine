@@ -12,23 +12,22 @@
 class Sprite
 {
 	private:
-		char* id;
+		static char* id;
 		int xPos;
 		int yPos;
 		int currFrame;
 		int currAnim;
 
-		TextureManager* textureMgr;
-
-		static std::map<char*, int> animationList;
-		static std::map<int, std::pair<int, SDL_Rect>> animationFrames;   
+		static TextureManager* textureMgr;
+		static std::map<char*, std::pair<int, int>> animationList;
+		static std::map<int, std::map<int, SDL_Rect>> animationFrames;   
 		
 	public:
 		Sprite(char* id, int x, int y);
 
-		static bool Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, TextureManager* textureMgr);
+		static bool Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, TextureManager* texMgr);
 
-		void Draw();
+		void Draw(char*);
 		int GetX();
 		int GetY();
 
