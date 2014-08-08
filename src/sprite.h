@@ -20,6 +20,12 @@ class Sprite
 		int currFrame;
 		int currAnim;
 
+		int UpdateTime = 100;
+		int CurrentTime = 0;
+		int LastUpdate = 0;
+
+		std::string nextAnim;
+
 		typedef std::map<std::string, std::pair<int, int>> animationList;
 		typedef std::map<std::string, std::pair<int, int>>::iterator alItr;
 		typedef std::map<int, std::map<int, SDL_Rect>> animationFrames; 
@@ -34,7 +40,10 @@ class Sprite
 
 		bool Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, TextureManager* texMgr);
 
-		void Draw(std::string);
+		void Draw();
+		void SetNextAnim(std::string newAnim);
+		void SetXPos(int newX);
+		void SetYPos(int newY);
 		int GetX();
 		int GetY();
 
