@@ -72,7 +72,6 @@ void RJEngine::MainLoop()
 {
 	while (mainWindow != NULL)
 	{
-		SDL_RenderClear(mainRenderer);
 		HandleInput();
 		Update();
 		Render();
@@ -95,15 +94,19 @@ void RJEngine::HandleInput()
 				{
 					case SDLK_LEFT:
 						printf("LEFT PRESSED!\n");
+						testSprite->Draw("WalkLeft");
 						break;
 					case SDLK_RIGHT:
 						printf("RIGHT PRESSED!\n");
+						testSprite->Draw("WalkRight");
 						break;
 					case SDLK_DOWN:
 						printf("DOWN PRESSED!\n");
+						testSprite->Draw("WalkDown");
 						break;
 					case SDLK_UP:
 						printf("UP PRESSED!\n");
+						testSprite->Draw("WalkUp");
 						break;
 				}
 				break;
@@ -113,15 +116,14 @@ void RJEngine::HandleInput()
 
 void RJEngine::Update()
 {
-
 }
 
 void RJEngine::Render()
 {
-	SDL_RenderClear(mainRenderer);
 	testTextureMgr->Get("testBG")->Draw(0,0);
-	testSprite->Draw("WalkUp");
+	testSprite->Draw("WalkDown");
 	SDL_RenderPresent(mainRenderer);
+	SDL_Delay(1000);
 }
 
 void RJEngine::Close()
@@ -149,6 +151,7 @@ void RJEngine::Begin()
 		throw "Unable to initialize engine, shutting down!";
 	}
 
+	testSprite->Draw("WalkDown");
 	MainLoop();
 }
 
