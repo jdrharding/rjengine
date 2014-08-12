@@ -51,26 +51,6 @@ bool Sprite::Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, Textur
 
 void Sprite::Draw()
 {
-	CurrentTime = SDL_GetTicks();
-
-	if ((CurrentTime - LastUpdate) < UpdateTime)
-	{
-		SDL_Rect rect = aFrames[currAnim][currFrame];
-		this->textureMgr->Get(id)->Draw(xPos, yPos, rect.x, rect.y, rect.h, rect.w);
-		return;
-	}
-
-	LastUpdate = SDL_GetTicks();
-
-	if (nextAnim == "Idle")
-	{
-		SDL_Rect rect = aFrames[currAnim][1];
-		std::cout << "Drawing " << nextAnim << ", ID: " << currAnim << ". Coords: x:" << rect.x << " y:" << rect.y << std::endl;
-		this->textureMgr->Get(id)->Draw(xPos, yPos, rect.x, rect.y, rect.h, rect.w);
-		nextAnim = "Idle";
-		return;
-	}
-
 	int cframe = currFrame;
 	if (currAnim != aList[nextAnim].first)
 	{
@@ -81,7 +61,7 @@ void Sprite::Draw()
 	{
 		currFrame = 1;
 	}
-	else
+	else if (!(nextAnim == "Idle"))
 	{
 		currFrame++;
 	}
@@ -107,12 +87,32 @@ int Sprite::GetY()
 	return yPos;
 }
 
+int Sprite::GetLastUpdate()
+{
+	return LastUpdate;
+}
+
+int Sprite::SetLastUpdate(int updateInt)
+{
+	LastUpdate = updateInt;
+}
+
 void Sprite::SetXPos(int newX)
+{
+	xPos = newX;
+}
+
+void Sprite::SetYPos(int newY)
+{
+	yPos = newY;
+}
+
+void Sprite::ChangeXPos(int newX)
 {
 	xPos += newX;
 }
 
-void Sprite::SetYPos(int newY)
+void Sprite::ChangeYPos(int newY)
 {
 	yPos += newY;
 }

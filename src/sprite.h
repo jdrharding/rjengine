@@ -20,8 +20,6 @@ class Sprite
 		int currFrame;
 		int currAnim;
 
-		int UpdateTime = 100;
-		int CurrentTime = 0;
 		int LastUpdate = 0;
 
 		std::string nextAnim;
@@ -44,8 +42,12 @@ class Sprite
 		void SetNextAnim(std::string newAnim);
 		void SetXPos(int newX);
 		void SetYPos(int newY);
+		void ChangeXPos(int newX);
+		void ChangeYPos(int newY);
 		int GetX();
 		int GetY();
+		int GetLastUpdate();
+		int SetLastUpdate(int updateInt);
 
 };
 

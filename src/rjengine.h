@@ -28,6 +28,8 @@ class RJEngine
 		char* windowTitle;
 		int windowHeight;
 		int windowWidth;
+		int currentTime;
+		int updateTime = 100;
 
 	private:
 

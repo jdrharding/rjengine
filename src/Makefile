@@ -4,9 +4,9 @@ CC = g++
 
 CCFLAGS = -std=c++11
 
-INCLUDE_PATHS = -ID:\SDLLibs\i686-w64-mingw32\include\SDL2
+INCLUDE_PATHS = -IE:\Programming\SDLlibs\i686-w64-mingw32\include\SDL2
 
-LIBRARY_PATHS = -LD:\SDLLibs\i686-w64-mingw32\lib
+LIBRARY_PATHS = -LE:\Programming\SDLlibs\i686-w64-mingw32\lib
 
 COMPILER_FLAGS = -w -Wl,-subsystem,console
 

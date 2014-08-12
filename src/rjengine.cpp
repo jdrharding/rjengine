@@ -81,6 +81,7 @@ void RJEngine::MainLoop()
 
 void RJEngine::HandleInput()
 {
+
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -92,29 +93,41 @@ void RJEngine::HandleInput()
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym)
 				{
-					case SDLK_LEFT:
-						printf("LEFT PRESSED!\n");
-						testSprite->SetXPos(-5);
-						testSprite->SetNextAnim("WalkLeft");
-						break;
-					case SDLK_RIGHT:
-						printf("RIGHT PRESSED!\n");
-						testSprite->SetXPos(5);
-						testSprite->SetNextAnim("WalkRight");
-						break;
-					case SDLK_DOWN:
-						printf("DOWN PRESSED!\n");
-						testSprite->SetYPos(5);
-						testSprite->SetNextAnim("WalkDown");
-						break;
-					case SDLK_UP:
-						printf("UP PRESSED!\n");
-						testSprite->SetYPos(-5);
-						testSprite->SetNextAnim("WalkUp");
+					case SDLK_SPACE:
+						printf("ATTACK!\n");
 						break;
 				}
 				break;
 		} 
+	}
+
+	const Uint8 *keydown = SDL_GetKeyboardState(NULL);
+
+	currentTime = SDL_GetTicks();
+
+	if ((currentTime - testSprite->GetLastUpdate()) >= updateTime)
+	{
+	    if(keydown[SDL_SCANCODE_LEFT])
+	    {
+			testSprite->SetNextAnim("WalkLeft");
+			testSprite->ChangeXPos(-5);
+	    }
+	    if(keydown[SDL_SCANCODE_RIGHT])
+	    {
+			testSprite->SetNextAnim("WalkRight");
+			testSprite->ChangeXPos(5);
+	    }
+	    if(keydown[SDL_SCANCODE_DOWN])
+	    {
+			testSprite->SetNextAnim("WalkDown");
+			testSprite->ChangeYPos(5);
+	    }
+	    if(keydown[SDL_SCANCODE_UP])
+	    {
+			testSprite->SetNextAnim("WalkUp");
+			testSprite->ChangeYPos(-5);
+	    }
+		testSprite->SetLastUpdate(SDL_GetTicks());
 	}
 }
 
