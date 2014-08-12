@@ -103,32 +103,23 @@ void RJEngine::HandleInput()
 
 	const Uint8 *keydown = SDL_GetKeyboardState(NULL);
 
-	currentTime = SDL_GetTicks();
-
-	if ((currentTime - testSprite->GetLastUpdate()) >= updateTime)
+	if(keydown[SDL_SCANCODE_LEFT])
 	{
-	    if(keydown[SDL_SCANCODE_LEFT])
-	    {
-			testSprite->SetNextAnim("WalkLeft");
-			testSprite->ChangeXPos(-5);
-	    }
-	    if(keydown[SDL_SCANCODE_RIGHT])
-	    {
-			testSprite->SetNextAnim("WalkRight");
-			testSprite->ChangeXPos(5);
-	    }
-	    if(keydown[SDL_SCANCODE_DOWN])
-	    {
-			testSprite->SetNextAnim("WalkDown");
-			testSprite->ChangeYPos(5);
-	    }
-	    if(keydown[SDL_SCANCODE_UP])
-	    {
-			testSprite->SetNextAnim("WalkUp");
-			testSprite->ChangeYPos(-5);
-	    }
-		testSprite->SetLastUpdate(SDL_GetTicks());
+		testSprite->SetNextAnim("WalkLeft");
 	}
+	if(keydown[SDL_SCANCODE_RIGHT])
+	{
+		testSprite->SetNextAnim("WalkRight");
+	}
+	if(keydown[SDL_SCANCODE_DOWN])
+	{
+		testSprite->SetNextAnim("WalkDown");
+	}
+	if(keydown[SDL_SCANCODE_UP])
+	{
+		testSprite->SetNextAnim("WalkUp");
+	}
+	
 }
 
 void RJEngine::Update()

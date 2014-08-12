@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Sprite Name="Test2" AnimationCount="4">
+	<Animation Name="WalkDown" Frames="6">
+		<Texture ID="1" XPos="0" YPos="0" Height="96" Width="96" />	
+		<Texture ID="2" XPos="96" YPos="0" Height="96" Width="96" />
+		<Texture ID="3" XPos="192" YPos="0" Height="96" Width="96" />
+		<Texture ID="4" XPos="288" YPos="0" Height="96" Width="96" />
+		<Texture ID="5" XPos="384" YPos="0" Height="96" Width="96" />
+		<Texture ID="6" XPos="480" YPos="0" Height="96" Width="96" />
+	</Animation>
+	<Animation Name="WalkLeft" Frames="6">	
+		<Texture ID="1" XPos="0" YPos="96" Height="96" Width="96" />
+		<Texture ID="2" XPos="96" YPos="96" Height="96" Width="96" />
+		<Texture ID="3" XPos="192" YPos="96" Height="96" Width="96" />
+		<Texture ID="4" XPos="288" YPos="96" Height="96" Width="96" />
+		<Texture ID="5" XPos="384" YPos="96" Height="96" Width="96" />
+		<Texture ID="6" XPos="480" YPos="96" Height="96" Width="96" />
+	</Animation>
+	<Animation Name="WalkRight" Frames="6">
+		<Texture ID="1" XPos="0" YPos="192" Height="96" Width="96" />
+		<Texture ID="2" XPos="96" YPos="192" Height="96" Width="96" />
+		<Texture ID="3" XPos="192" YPos="192" Height="96" Width="96" />
+		<Texture ID="4" XPos="288" YPos="192" Height="96" Width="96" />
+		<Texture ID="5" XPos="384" YPos="192" Height="96" Width="96" />
+		<Texture ID="6" XPos="480" YPos="192" Height="96" Width="96" />
+	</Animation>
+	<Animation Name="WalkUp" Frames="6">
+		<Texture ID="1" XPos="0" YPos="288" Height="96" Width="96" />
+		<Texture ID="2" XPos="96" YPos="288" Height="96" Width="96" />
+		<Texture ID="3" XPos="192" YPos="288" Height="96" Width="96" />
+		<Texture ID="4" XPos="288" YPos="288" Height="96" Width="96" />
+		<Texture ID="5" XPos="384" YPos="288" Height="96" Width="96" />
+		<Texture ID="6" XPos="480" YPos="288" Height="96" Width="96" />
+	</Animation>
+</Sprite>

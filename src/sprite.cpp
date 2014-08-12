@@ -23,13 +23,11 @@ bool Sprite::Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, Textur
 		for (rapidxml::xml_node<> *child = node->first_node(); child; child = child->next_sibling())
 		{			
 			aList.insert(std::make_pair(child->first_attribute("Name")->value(), std::make_pair(index, atoi(child->first_attribute("Frames")->value()))));
-			//printf("%s, %d, %s\n", child->first_attribute("Name")->value(), index, child->first_attribute("Frames")->value());
 			std::map<int, SDL_Rect> ginner;
 			for (rapidxml::xml_node<> *gchild = child->first_node(); gchild; gchild = gchild->next_sibling())
 			{
 				SDL_Rect rect = {atoi(gchild->first_attribute("XPos")->value()), atoi(gchild->first_attribute("YPos")->value()), atoi(gchild->first_attribute("Height")->value()), atoi(gchild->first_attribute("Width")->value())};
 				ginner.insert(std::make_pair(atoi(gchild->first_attribute("ID")->value()), rect));
-				//std::cout << index << ", " << gchild->first_attribute("ID")->value() << ", " << gchild->first_attribute("XPos")->value() << ", " << gchild->first_attribute("YPos")->value() << ", " << gchild->first_attribute("Height")->value() << ", " << gchild->first_attribute("Width")->value() << std::endl;
 			}
 			aFrames.insert(std::make_pair(index, ginner));
 			ginner.clear();
@@ -51,6 +49,40 @@ bool Sprite::Initialize(char* ifile, char* dfile, SDL_Renderer* renderer, Textur
 
 void Sprite::Draw()
 {
+	currentTime = SDL_GetTicks();
+
+	if((currentTime - lastUpdate) < updateTime)
+	{
+		SDL_Rect rect = aFrames[currAnim][currFrame];
+		this->textureMgr->Get(id)->Draw(xPos, yPos, rect.x, rect.y, rect.h, rect.w);
+		return;
+	}
+
+	lastUpdate = currentTime;
+
+	if(nextAnim == "Idle")
+	{
+		SDL_Rect rect = aFrames[currAnim][1];
+		this->textureMgr->Get(id)->Draw(xPos, yPos, rect.x, rect.y, rect.h, rect.w);
+		return;
+	}
+	else if(nextAnim == "WalkLeft")
+	{
+		this->ChangeXPos(-5);
+	}
+	else if(nextAnim == "WalkRight")
+	{
+		this->ChangeXPos(5);
+	}
+	else if(nextAnim == "WalkUp")
+	{
+		this->ChangeYPos(-5);
+	}
+	else if(nextAnim == "WalkDown")
+	{
+		this->ChangeYPos(5);
+	}
+
 	int cframe = currFrame;
 	if (currAnim != aList[nextAnim].first)
 	{
@@ -61,13 +93,12 @@ void Sprite::Draw()
 	{
 		currFrame = 1;
 	}
-	else if (!(nextAnim == "Idle"))
+	else
 	{
 		currFrame++;
 	}
 
 	SDL_Rect rect = aFrames[currAnim][currFrame];
-	std::cout << "Drawing " << nextAnim << ", ID: " << currAnim << ". Coords: x:" << rect.x << " y:" << rect.y << std::endl;
 	this->textureMgr->Get(id)->Draw(xPos, yPos, rect.x, rect.y, rect.h, rect.w);
 	nextAnim = "Idle";
 }
@@ -85,16 +116,6 @@ int Sprite::GetX()
 int Sprite::GetY()
 {
 	return yPos;
-}
-
-int Sprite::GetLastUpdate()
-{
-	return LastUpdate;
-}
-
-int Sprite::SetLastUpdate(int updateInt)
-{
-	LastUpdate = updateInt;
 }
 
 void Sprite::SetXPos(int newX)
