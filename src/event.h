@@ -7,7 +7,7 @@ class Event
 {
 public:
 	typedef size_t id_t;
-	virtual id GetID() = 0;
+	virtual id_t GetID() = 0;
 };
 
 typedef std::shared_ptr<Event> EventPtr;
