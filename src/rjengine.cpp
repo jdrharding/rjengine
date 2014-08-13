@@ -58,7 +58,7 @@ bool RJEngine::Initialize(char* title, int sWidth, int sHeight)
 	testTextureMgr = new TextureManager();
 	testTextureMgr->Add(mainRenderer, "testBG", "..\\images\\swamp.png");
 	testSprite = new Sprite("tSprite", 500, 500);
-	if(!testSprite->Sprite::Initialize("..\\images\\sprite.png", "..\\images\\sprite.xml", mainRenderer, testTextureMgr));
+	if(!testSprite->Sprite::Initialize("..\\images\\newsprite.png", "..\\images\\newsprite.xml", mainRenderer, testTextureMgr));
 	{
 		printf("Unable to initialize Sprite!");
 	}
