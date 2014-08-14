@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include "texture.h"
 #include "sprite.h"
+#include "portal.h"
 
 class RJEngine
 {
@@ -21,6 +22,8 @@ class RJEngine
 
 		TextureManager* testTextureMgr;
 		Sprite* testSprite;
+		Portal* testPortal;
+		std::shared_ptr<EventHandler> eHandler;
 
 		SDL_Event event;
 

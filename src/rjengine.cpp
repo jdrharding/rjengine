@@ -62,7 +62,8 @@ bool RJEngine::Initialize(char* title, int sWidth, int sHeight)
 	{
 		printf("Unable to initialize Sprite!");
 	}
-
+	eHandler = std::shared_ptr<EventHandler>(new EventHandler());
+	testPortal = new Portal(eHandler, 550, 500);
 
 
 	return success;
@@ -124,6 +125,8 @@ void RJEngine::HandleInput()
 
 void RJEngine::Update()
 {
+	testPortal->CheckProximity(testSprite);
+	eHandler->Process();
 }
 
 void RJEngine::Render()
