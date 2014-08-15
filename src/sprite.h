@@ -10,8 +10,10 @@
 #include "texturemgr.h"
 #include "rapidxml.hpp"
 #include "rapidxml_utils.hpp"
+#include "eventhandler.h"
+#include "observer.h"
 
-class Sprite
+class Sprite : public Observer
 {
 	private:
 		char* id;
@@ -27,9 +29,9 @@ class Sprite
 		std::string nextAnim;
 
 		typedef std::map<std::string, std::pair<int, int>> animationList;
-		typedef std::map<std::string, std::pair<int, int>>::iterator alItr;
+		typedef animationList::iterator alItr;
 		typedef std::map<int, std::map<int, SDL_Rect>> animationFrames; 
-		typedef std::map<int, std::map<int, SDL_Rect>>::iterator afIter;
+		typedef animationFrames::iterator afIter;
 
 		animationList aList;
 		animationFrames aFrames;

@@ -138,6 +138,10 @@ void RJEngine::Render()
 
 void RJEngine::Close()
 {
+	delete testTextureMgr;
+	delete testSprite;
+	delete testPortal;
+	
 	if(mainWindow)
 	{
 		SDL_DestroyWindow( mainWindow );

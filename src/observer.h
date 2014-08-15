@@ -6,17 +6,20 @@
 #include <memory>
 
 class Observer {
+
 public:
-    //! Template function that also converts the event into the right data type before calling the event listener. 
     template<class T>
     bool OnEvent(std::function<void(std::shared_ptr<T>)> proc){
         return OnEvent(T::ID(), [&, proc](EventPtr data){
-            auto ev = std::dynamic_pointer_cast<T>(data); 
+            //convert the shared ptr to our event pointer
+            auto ev = std::dynamic_pointer_cast<T>(data);
+            //check if nullptr, if not null return our proc
             if(ev) proc(ev); 
         }); 
     }
+
 protected:
-    typedef std::pair<Event::id_t, EventDelegate> _EvPair; 
+    typedef std::pair<IEvent::id_t, EventDelegate> EPair; 
     Observer(std::weak_ptr<EventHandler> mgr):_els_mEventHandler(mgr){
 
     }
@@ -28,17 +31,16 @@ protected:
         }
     }
 
-    bool OnEvent(Event::id_t id, EventDelegate proc){
+    bool OnEvent(IEvent::id_t id, EventDelegate proc){
         if(_els_mEventHandler.expired()) return false; 
         auto em = _els_mEventHandler.lock(); 
         if(em->AddObserver(id, proc)){
-            _els_mLocalEvents.push_back(_EvPair(id, proc)); 
+            _els_mLocalEvents.push_back(EPair(id, proc)); 
         }
     }
 private:
     std::weak_ptr<EventHandler> _els_mEventHandler; 
-    std::vector<_EvPair>        _els_mLocalEvents; 
-    //std::vector<_DynEvPair> mDynamicLocalEvents; 
+    std::vector<EPair>        _els_mLocalEvents;
 };
 
 #endif

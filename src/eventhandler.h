@@ -14,10 +14,10 @@ public:
     ~EventHandler(){
     } 
     //! Adds a listener to the event. The listener should invalidate itself when it needs to be removed. 
-    bool AddObserver(Event::id_t id, EventDelegate evnt); 
+    bool AddObserver(IEvent::id_t id, EventDelegate evnt); 
 
     //! Removes the specified delegate from the list
-    bool RemoveObserver(Event::id_t id, EventDelegate evnt); 
+    bool RemoveObserver(IEvent::id_t id, EventDelegate evnt); 
 
     //! Queues an event to be processed during the next update
     void QueueEvent(EventPtr ev); 
@@ -26,8 +26,8 @@ public:
     void Process(); 
 
 private:
-    std::list<std::shared_ptr<Event>> Events; 
-    std::map<Event::id_t, EventDelegateList> Observers; 
+    std::list<std::shared_ptr<IEvent>> Events; 
+    std::map<IEvent::id_t, EventDelegateList> Observers; 
 
 };
 

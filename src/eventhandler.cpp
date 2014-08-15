@@ -3,7 +3,7 @@
 
 using namespace std; 
 
-bool EventHandler::AddObserver(Event::id_t id, EventDelegate proc)
+bool EventHandler::AddObserver(IEvent::id_t id, EventDelegate proc)
 {
     auto i = Observers.find(id); 
     if(i == Observers.end()){
@@ -18,7 +18,7 @@ bool EventHandler::AddObserver(Event::id_t id, EventDelegate proc)
     list.push_back(proc); 
 }
 
-bool EventHandler::RemoveObserver(Event::id_t id, EventDelegate proc)
+bool EventHandler::RemoveObserver(IEvent::id_t id, EventDelegate proc)
 {
     auto j = Observers.find(id); 
     if(j == Observers.end()) return false; 

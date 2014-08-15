@@ -1,7 +1,7 @@
 #include "observer.h"
 #include "sprite.h"
 
-class TransportEvent : public Event
+class TransportEvent : public IEvent
 {
 private:
 

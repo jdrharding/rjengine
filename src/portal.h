@@ -17,11 +17,16 @@ public:
 		eHandler = eh;
 		mXPos = xpos;
 		mYPos = ypos;
+
+		OnEvent<TransportEvent>([&] std::shared_ptr<TransportEvent> data)
+		{
+			
+		}
 	}
 
 	void ActivatePortal(Sprite* spr) 
 	{
-		eHandler->QueueEvent(std::shared_ptr<Event>(new TransportEvent(60, 60, spr)));
+		eHandler->QueueEvent(std::shared_ptr<IEvent>(new TransportEvent(60, 60, spr)));
 	}
 
 	void CheckProximity(Sprite* spr)

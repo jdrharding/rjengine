@@ -4,21 +4,21 @@
 #include <cstddef>
 #include <memory>
 
-class Event 
+class IEvent 
 {
 public:
 	typedef size_t id_t;
 	virtual id_t GetID() = 0;
 };
 
-typedef std::shared_ptr<Event> EventPtr;
+typedef std::shared_ptr<IEvent> EventPtr;
 typedef std::function<void(EventPtr&)> EventDelegate;
 
 #define DECLARE_EVENT(type) \
-    static Event::id_t ID(){ \
-        return reinterpret_cast<Event::id_t>(&ID); \
+    static IEvent::id_t ID(){ \
+        return reinterpret_cast<IEvent::id_t>(&ID); \
     } \
-    Event::id_t GetID() override { \
+    IEvent::id_t GetID() override { \
         return ID(); \
     }\
 
